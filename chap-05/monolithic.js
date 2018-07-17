@@ -39,11 +39,11 @@ var server = http.createServer((req, res) => {
 }).listen(8000);
 
 /**
- * 
+ * 요청에 대해 회원관리, 상품관리, 구매 관리 모듈별로 분기
  * @param  res 
  * @param  method 
- * @param  pathname 
- * @param  params  
+ * @param  pathname uri
+ * @param  params  입력파라미터 
  */
 function onRequest(res, method, pathname, params) {
   switch(pathname) {
