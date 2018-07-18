@@ -3,7 +3,7 @@ const conn = {
   host : 'localhost',
   user : 'micro',
   password : 'service',
-  databse : 'monolithic'
+  database : 'monolithic'
 }
 
 exports.onRequest = function(res, method, pathname, params, cb) {
@@ -33,7 +33,8 @@ exports.onRequest = function(res, method, pathname, params, cb) {
  */
 function register(method, pathname, params, cb) {
   var response = {
-    errorcode = 0,
+    key : params.key,
+    errorcode : 0,
     errormessage : 'sucess'
   }
 
@@ -69,32 +70,28 @@ function register(method, pathname, params, cb) {
  */
 function inquiry(method, pathname, params, cb) {
   var response = {
-    errorcode = 0,
+    key : params.key,
+    errorcode : 0,
     errormessage : 'sucess'
   }
 
-  if (params.name == null || params.category == null || 
-      params.price == null || params.description == null ) {
-        response.errorcode = 1;
-        response.errormessage = 'Invalid Parameters';
-        cb(response);
-  } else {
-    var connection = mysql.createConnection(conn);
-    connection.connect();
+  
+  var connection = mysql.createConnection(conn);
+  connection.connect();
 
-    connection.query('select * from goods'
-                  ,(error, results, fields) => {
-                    if(error || results.length == 0) {
-                      response.errorcode = 1;
-                      response.errormessage = error ? error : 'no data';
-                    } else {
-                      response.results = results;
-                    }
-                    cb(response);
-                  });
-    connection.end();              
+  connection.query('select * from goods'
+                ,(error, results, fields) => {
+                  if(error || results.length == 0) {
+                    response.errorcode = 1;
+                    response.errormessage = error ? error : 'no data';
+                  } else {
+                    response.results = results;
+                  }
+                  cb(response);
+                });
+  connection.end();              
     
-  }
+  
 }
 
 /**
@@ -106,7 +103,8 @@ function inquiry(method, pathname, params, cb) {
  */
 function unregister(method, pathname, params, cb) {
   var response = {
-    errorcode = 0,
+    key : params.key,
+    errorcode : 0,
     errormessage : 'sucess'
   }
   if(params.id == null) {
